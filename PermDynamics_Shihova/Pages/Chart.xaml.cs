@@ -12,6 +12,7 @@ namespace PermDynamics_Shihova.Pages
         public double actualHeightCanvas = 0;
         public double maxValue = 0;
         double averageValue = 0;
+        Line averageLine = new Line();
 
         public DispatcherTimer dispatcherTimer = new DispatcherTimer();
         public Chart()
@@ -97,7 +98,16 @@ namespace PermDynamics_Shihova.Pages
 
             double averageY = actualHeightCanvas - ((averageValue / maxValue) * actualHeightCanvas);
 
+            averageLine.X1 = 0;
+            averageLine.X2 = MainWindow.mainWindow.pointsInfo.Count * 20 + 300;
+            averageLine.Y1 = averageY;
+            averageLine.Y2 = averageY;
 
+            averageLine.Stroke = Brushes.LightGoldenrodYellow;
+            averageLine.StrokeThickness = 3;
+
+            if (!canvas.Children.Contains(averageLine))
+                canvas.Children.Add(averageLine);
 
             for (int i = 0; i < MainWindow.mainWindow.pointsInfo.Count; i++)
             {
@@ -108,6 +118,7 @@ namespace PermDynamics_Shihova.Pages
             }
 
             canvas.Width = MainWindow.mainWindow.pointsInfo.Count * 20 + 300;
+            averageLine.X2 = canvas.Width;
             scroll.ScrollToHorizontalOffset(canvas.Width);
 
             current_value.Content = "Тек. знач: " + Math.Round(value, 2);
